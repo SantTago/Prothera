@@ -3,6 +3,7 @@ export interface VideoData {
   title: string;
   thumbnail: string;
   duration: string;
+  videoUrl?: string; // Optional field for real video playback URL
 }
 
 export interface Course {

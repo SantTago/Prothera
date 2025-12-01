@@ -1,6 +1,6 @@
+
 import React from 'react';
-import VideoCarousel from '../components/VideoCarousel';
-import { VIDEOS } from '../constants';
+import { MACHINES_IMAGES } from '../constants';
 
 const Machines: React.FC = () => {
   return (
@@ -37,11 +37,11 @@ const Machines: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl">
+          <div className="relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
             <img 
-              src="https://picsum.photos/id/119/800/600" 
+              src={MACHINES_IMAGES[0]} 
               alt="CNC Machine" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
           </div>
@@ -52,11 +52,11 @@ const Machines: React.FC = () => {
       <section className="py-20 bg-gray-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div className="order-2 md:order-1 relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl">
+            <div className="order-2 md:order-1 relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
               <img 
-                src="https://picsum.photos/id/252/800/600" 
+                src={MACHINES_IMAGES[1]} 
                 alt="3D Printer" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
             </div>
@@ -76,20 +76,27 @@ const Machines: React.FC = () => {
         </div>
       </section>
 
-      {/* Video Carousel Section - REQUIRED */}
-      <section className="py-24 bg-ortho-navy border-t border-ortho-cyan/20 border-b border-ortho-cyan/20">
+      {/* Machines Gallery */}
+      <section className="py-20 bg-ortho-navy/20 border-t border-gray-900 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
-           <h2 className="text-3xl md:text-4xl font-bold text-white flex items-center justify-center gap-3">
-             <span className="text-4xl">🛠️</span> Por Dentro da Fabricação: <span className="text-ortho-cyan">Tecnologia em Ação</span>
-           </h2>
-           <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-             Veja nossos engenheiros e máquinas trabalhando em sincronia para criar o futuro da ortopedia.
-           </p>
+            <h2 className="text-2xl font-bold text-white mb-2">Galeria <span className="text-ortho-cyan">Tecnológica</span></h2>
+            <p className="text-gray-400 text-sm">Equipamentos de última geração em operação.</p>
         </div>
-        
-        {/* The Carousel Component */}
-        <VideoCarousel videos={VIDEOS} />
-        
+        <div className="relative w-full">
+            <div className="flex animate-[scroll_40s_linear_infinite] gap-6 w-[max-content] hover:[animation-play-state:paused]">
+                {[...MACHINES_IMAGES, ...MACHINES_IMAGES].map((src, index) => (
+                    <div key={index} className="w-[300px] h-[200px] flex-shrink-0 rounded-xl overflow-hidden border border-gray-700 hover:border-ortho-cyan transition-colors duration-300">
+                        <img src={src} alt={`Máquina Prothera ${index}`} className="w-full h-full object-cover" />
+                    </div>
+                ))}
+            </div>
+        </div>
+        <style>{`
+          @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
       </section>
     </div>
   );

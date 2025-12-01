@@ -43,12 +43,12 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ videos }) => {
   }
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-4 py-8">
+    <div className="relative w-full max-w-7xl mx-auto px-4 py-8 group">
       {/* Carousel Controls */}
       <div className="flex items-center justify-between space-x-4">
         <button 
           onClick={prevSlide}
-          className="p-3 rounded-full border border-ortho-cyan text-ortho-cyan hover:bg-ortho-cyan hover:text-black transition-colors duration-300 z-10"
+          className="p-3 rounded-full border border-ortho-cyan text-ortho-cyan hover:bg-ortho-cyan hover:text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
         >
           <ChevronLeft size={24} />
         </button>
@@ -58,17 +58,17 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ videos }) => {
             {visibleVideos.map((video) => (
               <div 
                 key={`${video.id}-${currentIndex}`} // Force re-render for animation simply
-                className="group relative bg-ortho-black border border-gray-800 hover:border-ortho-cyan transition-all duration-300 rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-ortho-cyan/20"
+                className="group/item relative bg-ortho-black border border-gray-800 hover:border-ortho-cyan transition-all duration-300 rounded-xl overflow-hidden cursor-pointer shadow-lg hover:shadow-ortho-cyan/20"
                 onClick={() => handleVideoClick(video)}
               >
                 <div className="aspect-video relative overflow-hidden">
                   <img 
                     src={video.thumbnail} 
                     alt={video.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover transform group-hover/item:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-ortho-cyan/20 border border-ortho-cyan flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="absolute inset-0 bg-black/50 group-hover/item:bg-black/30 transition-colors flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-ortho-cyan/20 border border-ortho-cyan flex items-center justify-center group-hover/item:scale-110 transition-transform">
                       <Play size={20} className="text-ortho-cyan fill-current" />
                     </div>
                   </div>
@@ -77,7 +77,7 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ videos }) => {
                   </span>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-white font-semibold text-lg truncate group-hover:text-ortho-cyan transition-colors">
+                  <h3 className="text-white font-semibold text-lg truncate group-hover/item:text-ortho-cyan transition-colors">
                     {video.title}
                   </h3>
                 </div>
@@ -88,7 +88,7 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ videos }) => {
 
         <button 
           onClick={nextSlide}
-          className="p-3 rounded-full border border-ortho-cyan text-ortho-cyan hover:bg-ortho-cyan hover:text-black transition-colors duration-300 z-10"
+          className="p-3 rounded-full border border-ortho-cyan text-ortho-cyan hover:bg-ortho-cyan hover:text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
         >
           <ChevronRight size={24} />
         </button>

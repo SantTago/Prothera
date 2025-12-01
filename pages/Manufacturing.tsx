@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { MANUFACTURING_IMAGES } from '../constants';
 
 const Manufacturing: React.FC = () => {
   return (
@@ -42,9 +44,9 @@ const Manufacturing: React.FC = () => {
           <div className="order-1 lg:order-2 relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-ortho-cyan to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             <img 
-              src="https://picsum.photos/id/201/600/400" 
+              src="https://i.ibb.co/gZLv8GN9/Whats-App-Image-2025-11-29-at-20-38-10-1.jpg" 
               alt="Prótese" 
-              className="relative rounded-lg shadow-2xl w-full object-cover border border-gray-800"
+              className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"
             />
           </div>
         </section>
@@ -54,9 +56,9 @@ const Manufacturing: React.FC = () => {
            <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-ortho-cyan rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             <img 
-              src="https://picsum.photos/id/160/600/400" 
+              src="https://i.ibb.co/gLSBTNF6/Whats-App-Image-2025-11-29-at-20-38-08-2.jpg" 
               alt="Órtese" 
-              className="relative rounded-lg shadow-2xl w-full object-cover border border-gray-800"
+              className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"
             />
           </div>
           <div>
@@ -112,13 +114,36 @@ const Manufacturing: React.FC = () => {
            <div className="order-1 lg:order-2 relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-ortho-cyan to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             <img 
-              src="https://picsum.photos/id/250/600/400" 
+              src="https://i.ibb.co/h1Cthbsp/16.jpg" 
               alt="Colete" 
-              className="relative rounded-lg shadow-2xl w-full object-cover border border-gray-800"
+              className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"
             />
           </div>
         </section>
       </div>
+
+      {/* Production Gallery */}
+      <section className="py-20 bg-ortho-navy/20 border-t border-gray-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
+            <h2 className="text-2xl font-bold text-white mb-2">Galeria de <span className="text-ortho-cyan">Produção</span></h2>
+            <p className="text-gray-400 text-sm">Nossos processos e resultados em imagens.</p>
+        </div>
+        <div className="relative w-full">
+            <div className="flex animate-[scroll_40s_linear_infinite] gap-6 w-[max-content] hover:[animation-play-state:paused]">
+                {[...MANUFACTURING_IMAGES, ...MANUFACTURING_IMAGES].map((src, index) => (
+                    <div key={index} className="w-[300px] h-[200px] flex-shrink-0 rounded-xl overflow-hidden border border-gray-700 hover:border-ortho-cyan transition-colors duration-300">
+                        <img src={src} alt={`Produção Prothera ${index}`} className="w-full h-full object-cover" />
+                    </div>
+                ))}
+            </div>
+        </div>
+        <style>{`
+          @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+      </section>
     </div>
   );
 };
