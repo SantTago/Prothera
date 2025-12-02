@@ -2,9 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prothera O & P Service</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -18,12 +19,25 @@
             },
             fontFamily: {
               sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
+            animation: {
+              'scroll': 'scroll 40s linear infinite',
+            },
+            keyframes: {
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              }
             }
           }
         }
       }
     </script>
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
     <style>
       body {
         font-family: 'Inter', sans-serif;
@@ -45,20 +59,828 @@
         background: #00cccc; 
       }
     </style>
-  <script type="importmap">
+
+    <!-- Import Map for React Dependencies -->
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@18.2.0,react-dom@18.2.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6"
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
   }
 }
 </script>
-</head>
+
+    <!-- Babel for in-browser compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
+
+    <!-- MAIN APPLICATION SCRIPT -->
+    <script type="text/babel" data-type="module">
+      import React, { useState, useEffect, useRef } from 'react';
+      import ReactDOM from 'react-dom/client';
+      import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+      import { 
+        Menu, X, ArrowRight, ChevronDown, Mail, Phone, MapPin, Instagram, 
+        Play, Pause, ChevronLeft, ChevronRight, Calendar, Activity, Cpu, 
+        GraduationCap, CheckCircle, Star, MessageCircle 
+      } from 'lucide-react';
+
+      // ==========================================
+      // 1. DATA CONSTANTS
+      // ==========================================
+
+      const VERTICAL_VIDEOS = [
+        {
+          id: 'shorts1',
+          title: 'CNC Prothera em Ação',
+          thumbnail: 'https://img.youtube.com/vi/vJrSu3YM9Ic/hqdefault.jpg', 
+          duration: '0:15',
+          videoUrl: 'https://www.youtube.com/embed/vJrSu3YM9Ic'
+        },
+        {
+          id: 'shorts2',
+          title: 'Processo de Escultura Digital',
+          thumbnail: 'https://img.youtube.com/vi/DrjqW1NpnkU/hqdefault.jpg',
+          duration: '0:20',
+          videoUrl: 'https://www.youtube.com/embed/DrjqW1NpnkU'
+        },
+        {
+          id: 'shorts3',
+          title: 'Acabamento e Detalhes',
+          thumbnail: 'https://img.youtube.com/vi/837owKGwuo0/hqdefault.jpg',
+          duration: '0:30',
+          videoUrl: 'https://www.youtube.com/embed/837owKGwuo0'
+        },
+        {
+          id: 'shorts4',
+          title: 'Tecnologia Aplicada',
+          thumbnail: 'https://img.youtube.com/vi/vUAGAsXhQak/hqdefault.jpg',
+          duration: '0:25',
+          videoUrl: 'https://www.youtube.com/embed/vUAGAsXhQak'
+        }
+      ];
+
+      const COURSES = [
+        {
+          id: 'rigo1',
+          title: 'Formação Rigo Concept®️ – Nível 1',
+          date: '21, 22, 23 e 24 de Maio de 2026',
+          audience: 'Fisioterapeutas e Ortesistas',
+          description: 'A certificação essencial para profissionais que tratam Escoliose. Domine o método internacional mais avançado para o manejo clínico e ortésico.'
+        }
+      ];
+
+      const TEAM = [
+        {
+          id: 'tm1',
+          name: 'Artur Teixeira',
+          role: 'Diretor Técnico',
+          image: 'https://i.ibb.co/8DfSVsTR/5dca3842-e1db-44f3-abfa-5e26952261ae.jpg'
+        },
+        {
+          id: 'tm2',
+          name: 'Gledison Oliveira',
+          role: 'Especialista Rigo Concept',
+          image: 'https://i.ibb.co/Qv7RGrTK/190e3830-3946-45e4-b1a3-c4d96f3f2211.jpg'
+        },
+        {
+          id: 'tm3',
+          name: 'Roberto Araújo',
+          role: 'CPO Especialista em Escoliose',
+          image: 'https://i.ibb.co/B1R88cY/a351250c-6a48-4a98-abd5-5945ddb12fed.jpg'
+        }
+      ];
+
+      const ACADEMY_IMAGES = [
+        "https://i.ibb.co/Fk7ZjWk1/11.jpg",
+        "https://i.ibb.co/XfrdDV86/12.jpg",
+        "https://i.ibb.co/1tx1b3L7/13.jpg",
+        "https://i.ibb.co/wNg70NgC/14.jpg",
+        "https://i.ibb.co/jP0fgGhH/15.jpg",
+        "https://i.ibb.co/h1Cthbsp/16.jpg",
+        "https://i.ibb.co/vMCygmr/9.jpg"
+      ];
+
+      const MANUFACTURING_IMAGES = [
+        "https://i.ibb.co/gZLv8GN9/Whats-App-Image-2025-11-29-at-20-38-10-1.jpg",
+        "https://i.ibb.co/CsVsP0m8/Whats-App-Image-2025-11-29-at-20-38-10.jpg",
+        "https://i.ibb.co/rK9Sfj5V/Whats-App-Image-2025-11-29-at-20-38-10-3.jpg",
+        "https://i.ibb.co/Kcf3DxY9/Whats-App-Image-2025-11-29-at-20-38-09.jpg",
+        "https://i.ibb.co/7dTSVxgX/Whats-App-Image-2025-11-29-at-20-38-09-1.jpg",
+        "https://i.ibb.co/mVQvMNsy/Whats-App-Image-2025-11-29-at-20-38-09-2.jpg",
+        "https://i.ibb.co/0RM6jvbK/Whats-App-Image-2025-11-29-at-20-38-08.jpg",
+        "https://i.ibb.co/WWtRVGv5/Whats-App-Image-2025-11-29-at-20-38-08-1.jpg",
+        "https://i.ibb.co/gLSBTNF6/Whats-App-Image-2025-11-29-at-20-38-08-2.jpg",
+        "https://i.ibb.co/JRDTTs8r/Whats-App-Image-2025-11-29-at-20-38-08-3.jpg",
+        "https://i.ibb.co/zVDvQpVD/Whats-App-Image-2025-11-29-at-20-38-07.jpg",
+        "https://i.ibb.co/kg6hJ9Vf/Whats-App-Image-2025-11-30-at-00-54-35-1.jpg",
+        "https://i.ibb.co/JWMp13QS/Whats-App-Image-2025-11-30-at-00-54-35-2.jpg",
+        "https://i.ibb.co/0psyChP1/Whats-App-Image-2025-11-30-at-00-54-34.jpg",
+        "https://i.ibb.co/8LMfWXMD/Whats-App-Image-2025-11-30-at-00-54-34-1.jpg",
+        "https://i.ibb.co/zVwz9WCN/Whats-App-Image-2025-11-30-at-00-54-34-2.jpg",
+        "https://i.ibb.co/HTJwV9NK/Whats-App-Image-2025-11-30-at-00-54-34-3.jpg",
+        "https://i.ibb.co/fz7r919D/Whats-App-Image-2025-11-30-at-00-54-34-4.jpg",
+        "https://i.ibb.co/gMTjy6Wp/Whats-App-Image-2025-11-30-at-00-54-34-5.jpg",
+        "https://i.ibb.co/Gv8xsmPW/Whats-App-Image-2025-11-30-at-00-54-34-6.jpg",
+        "https://i.ibb.co/BKBV7Ws8/Whats-App-Image-2025-11-30-at-00-54-33.jpg",
+        "https://i.ibb.co/yc7D3Xtr/Whats-App-Image-2025-11-30-at-00-54-31.jpg",
+        "https://i.ibb.co/RkJtJT3F/Whats-App-Image-2025-11-30-at-00-54-30.jpg",
+        "https://i.ibb.co/9mh2CtLt/Whats-App-Image-2025-11-30-at-00-54-30-1.jpg",
+        "https://i.ibb.co/hFhwnnD9/Whats-App-Image-2025-11-30-at-00-54-35.jpg"
+      ];
+
+      const MACHINES_IMAGES = [
+        "https://i.ibb.co/1tHLdw9X/Whats-App-Image-2025-11-30-at-01-02-48.jpg",
+        "https://i.ibb.co/H0xSk6Q/Whats-App-Image-2025-11-30-at-01-02-47-3.jpg",
+        "https://i.ibb.co/PGSDSXzN/Whats-App-Image-2025-11-30-at-01-02-47-2.jpg",
+        "https://i.ibb.co/bjZ4ZZJz/Whats-App-Image-2025-11-30-at-01-02-47-1.jpg",
+        "https://i.ibb.co/rKPJ0RZc/Whats-App-Image-2025-11-30-at-01-02-46.jpg",
+        "https://i.ibb.co/pjp9gqdN/Whats-App-Image-2025-11-30-at-01-02-47.jpg"
+      ];
+
+      // ==========================================
+      // 2. SHARED COMPONENTS
+      // ==========================================
+
+      const VerticalVideoCarousel = ({ videos }) => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const [isPaused, setIsPaused] = useState(false);
+        const [playingVideoId, setPlayingVideoId] = useState(null);
+        // Simplified useRef to avoid TS parsing issues in browser
+        const pauseTimeoutRef = useRef(null);
+        const itemsToShow = 4;
+
+        useEffect(() => {
+          if (isPaused || playingVideoId) return;
+          const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % videos.length);
+          }, 3000);
+          return () => clearInterval(interval);
+        }, [isPaused, playingVideoId, videos.length]);
+
+        const handleInteraction = () => {
+          if (playingVideoId) return;
+          setIsPaused(true);
+          if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+          pauseTimeoutRef.current = setTimeout(() => {
+            if (!playingVideoId) setIsPaused(false);
+          }, 5000);
+        };
+
+        const handleVideoClick = (video) => {
+          if (playingVideoId === video.id) {
+            setPlayingVideoId(null);
+            setIsPaused(false);
+          } else {
+            setPlayingVideoId(video.id);
+            setIsPaused(true);
+          }
+        };
+
+        const visibleVideos = [];
+        for (let i = 0; i < itemsToShow; i++) {
+          const index = (currentIndex + i) % videos.length;
+          visibleVideos.push(videos[index]);
+        }
+
+        const getVideoIdFromUrl = (url) => {
+          if (!url) return '';
+          const parts = url.split('/');
+          return parts[parts.length - 1];
+        };
+
+        return (
+          <div 
+            className="w-full py-8 relative group" 
+            onMouseEnter={handleInteraction}
+            onTouchStart={handleInteraction}
+          >
+             <div className="flex items-center justify-between mb-4 px-4 max-w-7xl mx-auto">
+                <h3 className="text-white text-xl font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 bg-ortho-cyan rounded-full animate-pulse"></span>
+                  Acompanhe Nossos Stories
+                </h3>
+                {(isPaused || playingVideoId) && (
+                   <span className="text-xs text-ortho-cyan border border-ortho-cyan px-2 py-1 rounded flex items-center gap-1 animate-pulse">
+                     <Pause size={10} /> {playingVideoId ? 'Reproduzindo' : 'Pausado'}
+                   </span>
+                )}
+             </div>
+
+            <div className="overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {visibleVideos.map((video, idx) => {
+                    const isPlaying = playingVideoId === video.id;
+                    const videoId = getVideoIdFromUrl(video.videoUrl);
+
+                    return (
+                      <div 
+                        key={`${video.id}-${currentIndex}-${idx}`}
+                        className={`relative aspect-[9/16] bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg transition-all duration-500 ${isPlaying ? 'border-ortho-cyan ring-2 ring-ortho-cyan/20 scale-100 z-10' : 'hover:scale-105 hover:border-ortho-cyan cursor-pointer'}`}
+                        onClick={() => !isPlaying && handleVideoClick(video)}
+                      >
+                        {isPlaying && video.videoUrl ? (
+                          <div className="w-full h-full relative group/video">
+                            <iframe 
+                              width="100%" 
+                              height="100%" 
+                              src={`${video.videoUrl}?autoplay=1&rel=0&modestbranding=1&controls=1&showinfo=0&loop=1&playlist=${videoId}&playsinline=1`} 
+                              title={video.title}
+                              frameBorder="0" 
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                              allowFullScreen
+                              className="w-full h-full"
+                            ></iframe>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPlayingVideoId(null);
+                                setIsPaused(false);
+                              }}
+                              className="absolute top-2 right-2 bg-black/60 text-white p-1 rounded-full opacity-0 group-hover/video:opacity-100 transition-opacity hover:bg-ortho-cyan hover:text-black z-20"
+                              title="Fechar Vídeo"
+                            >
+                              <X size={16} />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <img 
+                              src={video.thumbnail} 
+                              alt={video.title} 
+                              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none"></div>
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                              <div className="w-12 h-12 rounded-full bg-ortho-cyan/20 backdrop-blur-sm border border-ortho-cyan flex items-center justify-center">
+                                <Play size={20} className="text-ortho-cyan fill-current ml-1" />
+                              </div>
+                            </div>
+                            <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
+                              <span className="text-xs font-mono text-ortho-cyan mb-1 block">{video.duration}</span>
+                              <h4 className="text-white font-semibold text-sm leading-tight line-clamp-2">{video.title}</h4>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const ScrollToTop = () => {
+        const { pathname } = useLocation();
+        useEffect(() => {
+          window.scrollTo(0, 0);
+        }, [pathname]);
+        return null;
+      };
+
+      const Logo = () => (
+        <Link to="/" className="block group transition-opacity duration-300 hover:opacity-90">
+          <img 
+            src="https://i.ibb.co/q3p1ZrC8/LOGO-PROTHERA-O-P.png" 
+            alt="Prothera O & P Service" 
+            className="h-16 w-auto object-contain"
+          />
+        </Link>
+      );
+
+      // ==========================================
+      // 3. PAGE COMPONENTS
+      // ==========================================
+
+      const Home = () => {
+        const [currentSlide, setCurrentSlide] = useState(0);
+        const heroSlides = [
+          {
+            id: 1,
+            image: "https://i.ibb.co/WWtRVGv5/Whats-App-Image-2025-11-29-at-20-38-08-1.jpg",
+            badge: "Engenharia de Ponta",
+            title: <><span className="text-ortho-cyan">Centro</span> de Fabricação</>,
+            description: "Desenvolvemos próteses e órteses de alta performance com processos industriais avançados, garantindo qualidade e precisão para cada paciente."
+          },
+          {
+            id: 2,
+            image: "https://i.ibb.co/rKPJ0RZc/Whats-App-Image-2025-11-30-at-01-02-46.jpg",
+            badge: "Tecnologia Industrial",
+            title: <>Máquinas e <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Equipamentos</span></>,
+            description: "Nossa infraestrutura conta com CNC de 5 eixos e impressão 3D de última geração, transformando projetos digitais em realidade tangível."
+          },
+          {
+            id: 3,
+            image: "https://i.ibb.co/1tx1b3L7/13.jpg",
+            badge: "Educação Especializada",
+            title: <><span className="text-transparent bg-clip-text bg-gradient-to-r from-ortho-cyan to-white">Cursos</span> e Treinamentos</>,
+            description: "Capacitação profissional completa. Compartilhamos conhecimento técnico e prático para elevar o nível da ortopedia nacional."
+          }
+        ];
+
+        useEffect(() => {
+          const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+          }, 6000); 
+          return () => clearInterval(timer);
+        }, []);
+
+        const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+        const prevSlide = () => setCurrentSlide((prev) => (prev - 1 < 0 ? heroSlides.length - 1 : prev - 1));
+        const goToSlide = (index) => setCurrentSlide(index);
+
+        return (
+          <div className="flex flex-col">
+            <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-black">
+              {heroSlides.map((slide, index) => (
+                <div key={slide.id} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
+                  <img src={slide.image} alt={`Slide ${index + 1}`} className="w-full h-full object-cover opacity-60 grayscale scale-105 transform transition-transform duration-[10000ms]" style={{ transform: index === currentSlide ? 'scale(1.1)' : 'scale(1.0)' }} />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-ortho-navy/30 to-ortho-black"></div>
+                </div>
+              ))}
+              <div className="relative z-10 text-center px-4 max-w-5xl mx-auto w-full">
+                {heroSlides.map((slide, index) => (
+                  <div key={slide.id} className={`transition-all duration-700 absolute inset-0 flex flex-col items-center justify-center transform ${index === currentSlide ? 'opacity-100 translate-y-0 relative' : 'opacity-0 translate-y-8 absolute pointer-events-none'}`}>
+                    <div className="mb-6 inline-block">
+                      <span className="bg-ortho-cyan/10 text-ortho-cyan border border-ortho-cyan px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase backdrop-blur-sm">{slide.badge}</span>
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">{slide.title}</h1>
+                    <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light">{slide.description}</p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Link to="/manufacturing" className="border border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm">Saiba Mais</Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={prevSlide} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border border-gray-600 text-gray-400 hover:text-ortho-cyan hover:border-ortho-cyan transition-all duration-300 bg-black/20 backdrop-blur-md hidden md:block"><ChevronLeft size={32} /></button>
+              <button onClick={nextSlide} className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border border-gray-600 text-gray-400 hover:text-ortho-cyan hover:border-ortho-cyan transition-all duration-300 bg-black/20 backdrop-blur-md hidden md:block"><ChevronRight size={32} /></button>
+              <div className="absolute bottom-10 z-20 flex gap-3">
+                {heroSlides.map((_, index) => (
+                  <button key={index} onClick={() => goToSlide(index)} className={`h-1.5 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-12 bg-ortho-cyan' : 'w-4 bg-gray-600 hover:bg-gray-400'}`} aria-label={`Ir para slide ${index + 1}`} />
+                ))}
+              </div>
+            </section>
+
+            <section className="py-24 bg-ortho-black border-b border-gray-900">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Nossa Missão</h2>
+                  <div className="w-20 h-1 bg-ortho-cyan mx-auto"></div>
+                  <p className="mt-6 text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+                    Democratizar o acesso a soluções ortopédicas de nível mundial, combinando o cuidado artesanal com a precisão da indústria 4.0. Não fabricamos apenas peças; construímos autonomia.
+                  </p>
+                </div>
+              </div>
+            </section>
+            
+            <section className="bg-ortho-black pb-12">
+              <VerticalVideoCarousel videos={VERTICAL_VIDEOS} />
+            </section>
+
+            <section className="py-24 bg-ortho-black relative overflow-hidden border-t border-gray-900">
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ortho-cyan/5 rounded-full blur-[128px] pointer-events-none"></div>
+               <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-ortho-navy/20 rounded-full blur-[128px] pointer-events-none"></div>
+               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                  <div className="text-center mb-16">
+                    <span className="text-ortho-cyan font-bold tracking-widest uppercase text-sm border border-ortho-cyan/30 px-3 py-1 rounded-full">Destaque Acadêmico</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mt-6 mb-4">Trilha de <span className="text-transparent bg-clip-text bg-gradient-to-r from-ortho-cyan to-blue-400">Conhecimento</span></h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto text-lg">Acompanhe o próximo grande passo na sua carreira.</p>
+                  </div>
+                  <div className="bg-gray-900/40 backdrop-blur-md border border-gray-800 rounded-3xl overflow-hidden shadow-2xl hover:shadow-ortho-cyan/10 transition-shadow duration-500">
+                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                      <div className="relative h-[400px] lg:h-auto group overflow-hidden border-b lg:border-b-0 lg:border-r border-gray-800">
+                         <div className="absolute inset-0 bg-ortho-cyan/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
+                         <img src="https://i.ibb.co/bMcSkx54/588427097-17929588671139106-2121076450106129035-n.jpg" alt="Formação Rigo Concept Banner" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent lg:hidden flex items-end p-6">
+                            <span className="text-white font-bold text-xl">Nível 1 - Certificação Internacional</span>
+                         </div>
+                      </div>
+                      <div className="p-8 md:p-12 flex flex-col justify-center">
+                         <div className="flex items-center gap-3 mb-6">
+                            <span className="bg-ortho-cyan text-black px-3 py-1 rounded-md text-sm font-bold flex items-center gap-1"><Star size={14} fill="black" /> Certificação Internacional</span>
+                            <span className="text-gray-400 text-sm flex items-center gap-1"><Calendar size={14} /> Inscrições Abertas</span>
+                         </div>
+                         <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">Formação Rigo Concept®️ <span className="text-ortho-cyan">– Nível 1</span></h3>
+                         <p className="text-gray-300 text-lg mb-6 leading-relaxed border-l-4 border-ortho-cyan pl-4">A certificação essencial para profissionais que tratam Escoliose. Domine o método internacional mais avançado para o manejo clínico e ortésico.</p>
+                         <div className="space-y-6 mb-8 bg-black/20 p-6 rounded-xl border border-gray-800">
+                            <h4 className="text-white font-semibold flex items-center gap-2"><GraduationCap size={20} className="text-ortho-cyan" /> Corpo Docente de Excelência:</h4>
+                            <ul className="space-y-3">
+                              <li className="flex items-start gap-3"><CheckCircle size={18} className="text-ortho-cyan mt-1 flex-shrink-0" /><span className="text-gray-400 text-sm"><strong className="text-white">Roberto Araújo</strong> – CPO e Especialista em Escoliose</span></li>
+                              <li className="flex items-start gap-3"><CheckCircle size={18} className="text-ortho-cyan mt-1 flex-shrink-0" /><span className="text-gray-400 text-sm"><strong className="text-white">Garikoitz Aristegui</strong> – Instrutor Internacional BSPTS / Rigo Concept®️</span></li>
+                              <li className="flex items-start gap-3"><CheckCircle size={18} className="text-ortho-cyan mt-1 flex-shrink-0" /><span className="text-gray-400 text-sm"><strong className="text-white">Gledison Oliveira</strong> – Especialista em Coletes Rigo Concept®️</span></li>
+                            </ul>
+                         </div>
+                         <div className="flex flex-col sm:flex-row gap-4">
+                            <Link to="/courses" className="flex-1 bg-ortho-cyan text-black text-center py-4 rounded-xl font-bold hover:bg-white transition-colors duration-300 shadow-lg shadow-ortho-cyan/20">Garantir Minha Vaga</Link>
+                            <Link to="/courses" className="flex-1 border border-gray-600 text-white text-center py-4 rounded-xl font-semibold hover:border-ortho-cyan hover:text-ortho-cyan transition-colors duration-300">Ver Ementa Completa</Link>
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+            </section>
+
+            <section className="py-20 bg-ortho-navy/20 border-t border-gray-900 overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
+                  <h2 className="text-2xl font-bold text-white mb-2">Infraestrutura <span className="text-ortho-cyan">Academy</span></h2>
+                  <p className="text-gray-400 text-sm">Laboratórios equipados para ensino prático.</p>
+              </div>
+              <div className="relative w-full">
+                  <div className="flex animate-[scroll_40s_linear_infinite] gap-6 w-[max-content] hover:[animation-play-state:paused]">
+                      {[...ACADEMY_IMAGES, ...ACADEMY_IMAGES].map((src, index) => (
+                          <div key={index} className="w-[300px] h-[200px] flex-shrink-0 rounded-xl overflow-hidden border border-gray-700 hover:border-ortho-cyan transition-colors duration-300">
+                              <img src={src} alt={`Estrutura Prothera ${index}`} className="w-full h-full object-cover" />
+                          </div>
+                      ))}
+                  </div>
+              </div>
+            </section>
+
+            <section className="py-24 bg-black border-t border-gray-900">
+               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold text-white mb-4">Quem Faz <span className="text-ortho-cyan">Acontecer</span></h2>
+                    <p className="text-gray-400">Nossa liderança técnica e educacional.</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    {TEAM.map((member) => (
+                      <div key={member.id} className="group text-center">
+                        <div className="relative w-40 h-40 mx-auto mb-6 rounded-full p-1 border-2 border-gray-800 group-hover:border-ortho-cyan transition-colors duration-300">
+                           <img src={member.image} alt={member.name} className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-ortho-cyan transition-colors">{member.name}</h3>
+                        <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{member.role}</p>
+                      </div>
+                    ))}
+                  </div>
+               </div>
+            </section>
+
+            <section className="py-24 bg-ortho-black border-t border-gray-900">
+               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                   <div className="text-center mb-12">
+                       <h2 className="text-3xl font-bold text-white mb-4">Onde <span className="text-ortho-cyan">Estamos</span></h2>
+                       <p className="text-gray-400">Visite nossa sede e conheça nossa estrutura.</p>
+                   </div>
+                   <div className="w-full h-[500px] rounded-xl overflow-hidden border border-gray-800 shadow-2xl bg-gray-900 group">
+                       <iframe 
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.014044764572!2d-38.513461299999996!3d-3.7406110999999993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c74994fc1eb5f9%3A0xeda848d43e2198c4!2sProthera%20O%26P%20Service!5e1!3m2!1spt-BR!2sbr!4v1758393982674!5m2!1spt-BR!2sbr" 
+                          width="100%" 
+                          height="100%" 
+                          style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) grayscale(20%)' }} 
+                          allowFullScreen 
+                          loading="lazy" 
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title="Mapa de Localização Prothera"
+                          className="w-full h-full transition-all duration-700 hover:filter-none"
+                       ></iframe>
+                   </div>
+               </div>
+            </section>
+          </div>
+        );
+      };
+
+      const Manufacturing = () => {
+        return (
+          <div className="bg-ortho-black min-h-screen">
+            <div className="bg-ortho-navy py-16 px-4">
+              <div className="max-w-7xl mx-auto">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Central de Fabricação</h1>
+                <p className="text-xl text-gray-300">Excelência técnica em cada detalhe.</p>
+              </div>
+            </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+              <section id="proteses" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <h2 className="text-3xl font-bold text-white mb-6 border-l-4 border-ortho-cyan pl-4">Próteses de Alta Performance</h2>
+                  <p className="text-gray-400 text-lg mb-6">Desenvolvemos membros artificiais que devolvem a função e a estética. Utilizamos fibra de carbono e ligas de titânio para garantir leveza e durabilidade.</p>
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Próteses Mioelétricas</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Membros Inferiores Esportivos</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Acabamento Cosmético Realista</li>
+                  </ul>
+                </div>
+                <div className="order-1 lg:order-2 relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-ortho-cyan to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                  <img src="https://i.ibb.co/gZLv8GN9/Whats-App-Image-2025-11-29-at-20-38-10-1.jpg" alt="Prótese" className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"/>
+                </div>
+              </section>
+              <section id="orteses" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                 <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-ortho-cyan rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                  <img src="https://i.ibb.co/gLSBTNF6/Whats-App-Image-2025-11-29-at-20-38-08-2.jpg" alt="Órtese" className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"/>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-6 border-l-4 border-ortho-cyan pl-4">Órteses Corretivas</h2>
+                  <p className="text-gray-400 text-lg mb-6">Suporte, alinhamento e correção. Nossas órteses são projetadas digitalmente (CAD) para se adaptar perfeitamente à anatomia do paciente, evitando pontos de pressão.</p>
+                   <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Órteses Cranianas</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>AFOs e KAFOs em Termoplástico</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Tutores Longos</li>
+                  </ul>
+                </div>
+              </section>
+              <section id="coletes" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <h2 className="text-3xl font-bold text-white mb-6 border-l-4 border-ortho-cyan pl-4">Coletes Ortopédicos</h2>
+                  <p className="text-gray-400 text-lg mb-6">Tratamento eficaz para escoliose e patologias da coluna. Utilizamos escaneamento 3D do tronco para eliminar a necessidade de moldes de gesso desconfortáveis.</p>
+                   <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Coletes Milwaukee e Boston</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Tecnologia de Impressão 3D Respirável</li>
+                    <li className="flex items-center text-gray-300"><span className="w-2 h-2 bg-ortho-cyan rounded-full mr-3"></span>Design Discreto</li>
+                  </ul>
+                </div>
+                 <div className="order-1 lg:order-2 relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-ortho-cyan to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                  <img src="https://i.ibb.co/h1Cthbsp/16.jpg" alt="Colete" className="relative rounded-lg shadow-2xl w-full h-[400px] object-cover border border-gray-800"/>
+                </div>
+              </section>
+            </div>
+            <section className="py-20 bg-ortho-navy/20 border-t border-gray-900 overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
+                  <h2 className="text-2xl font-bold text-white mb-2">Galeria de <span className="text-ortho-cyan">Produção</span></h2>
+                  <p className="text-gray-400 text-sm">Nossos processos e resultados em imagens.</p>
+              </div>
+              <div className="relative w-full">
+                  <div className="flex animate-[scroll_40s_linear_infinite] gap-6 w-[max-content] hover:[animation-play-state:paused]">
+                      {[...MANUFACTURING_IMAGES, ...MANUFACTURING_IMAGES].map((src, index) => (
+                          <div key={index} className="w-[300px] h-[200px] flex-shrink-0 rounded-xl overflow-hidden border border-gray-700 hover:border-ortho-cyan transition-colors duration-300">
+                              <img src={src} alt={`Produção Prothera ${index}`} className="w-full h-full object-cover" />
+                          </div>
+                      ))}
+                  </div>
+              </div>
+            </section>
+          </div>
+        );
+      };
+
+      const Machines = () => {
+        return (
+          <div className="bg-ortho-black min-h-screen">
+            <div className="relative py-20 px-4 border-b border-gray-900">
+              <div className="max-w-7xl mx-auto text-center">
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Nossa <span className="text-ortho-cyan">Tecnologia</span></h1>
+                <p className="text-xl text-gray-400 max-w-2xl mx-auto">Onde a precisão do código encontra a arte da reabilitação. Conheça as máquinas que transformam projetos digitais em realidade física.</p>
+              </div>
+            </div>
+            <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                  <div className="text-ortho-cyan text-sm font-bold tracking-widest mb-2 uppercase">Subtração de Material</div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Usinagem CNC de 5 Eixos</h2>
+                  <p className="text-gray-400 mb-6 leading-relaxed">Nossa fresadora CNC esculpe blocos de poliuretano e resina com precisão micrométrica. Ao contrário dos métodos manuais, o controle numérico computadorizado garante que a forma positiva do membro do paciente seja replicada com 100% de fidelidade ao arquivo CAD.</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-900 p-4 rounded border border-gray-800">
+                      <span className="block text-2xl font-bold text-white mb-1">0.01mm</span><span className="text-xs text-gray-500">Tolerância</span>
+                    </div>
+                    <div className="bg-gray-900 p-4 rounded border border-gray-800">
+                      <span className="block text-2xl font-bold text-white mb-1">24h</span><span className="text-xs text-gray-500">Operação Contínua</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
+                  <img src={MACHINES_IMAGES[0]} alt="CNC Machine" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+              </div>
+            </section>
+            <section className="py-20 bg-gray-900/30">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                  <div className="order-2 md:order-1 relative h-96 rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
+                    <img src={MACHINES_IMAGES[1]} alt="3D Printer" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                  </div>
+                  <div className="order-1 md:order-2">
+                    <div className="text-ortho-cyan text-sm font-bold tracking-widest mb-2 uppercase">Manufatura Aditiva</div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Impressão 3D Industrial</h2>
+                    <p className="text-gray-400 mb-6 leading-relaxed">Rapidez na prototipagem e liberdade geométrica. Utilizamos impressoras MJF (Multi Jet Fusion) para criar estruturas complexas e leves que seriam impossíveis de fabricar por métodos tradicionais. Ideal para coletes e encaixes de prova.</p>
+                    <ul className="space-y-2 text-gray-300">
+                      <li>• Materiais: PA11, PA12, Fibra de Carbono</li>
+                      <li>• Redução de desperdício de material</li>
+                      <li>• Personalização em massa</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section className="py-20 bg-ortho-navy/20 border-t border-gray-900 overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
+                  <h2 className="text-2xl font-bold text-white mb-2">Galeria <span className="text-ortho-cyan">Tecnológica</span></h2>
+                  <p className="text-gray-400 text-sm">Equipamentos de última geração em operação.</p>
+              </div>
+              <div className="relative w-full">
+                  <div className="flex animate-[scroll_40s_linear_infinite] gap-6 w-[max-content] hover:[animation-play-state:paused]">
+                      {[...MACHINES_IMAGES, ...MACHINES_IMAGES].map((src, index) => (
+                          <div key={index} className="w-[300px] h-[200px] flex-shrink-0 rounded-xl overflow-hidden border border-gray-700 hover:border-ortho-cyan transition-colors duration-300">
+                              <img src={src} alt={`Máquina Prothera ${index}`} className="w-full h-full object-cover" />
+                          </div>
+                      ))}
+                  </div>
+              </div>
+            </section>
+          </div>
+        );
+      };
+
+      const Courses = () => {
+        const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+        useEffect(() => {
+          const timer = setInterval(() => {
+            setCurrentImageIndex((prev) => (prev + 1) % ACADEMY_IMAGES.length);
+          }, 3000); 
+          return () => clearInterval(timer);
+        }, []);
+
+        const course = COURSES[0];
+
+        return (
+          <div className="bg-ortho-black min-h-screen pb-20">
+            <div className="bg-gradient-to-b from-ortho-navy to-ortho-black py-20 px-4">
+              <div className="max-w-4xl mx-auto text-center">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Prothera <span className="text-ortho-cyan">Academy</span></h1>
+                <p className="text-gray-300 text-lg">Formação de elite para especialistas em escoliose.</p>
+              </div>
+            </div>
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+              <div className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl hover:shadow-ortho-cyan/10 transition-shadow duration-500">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="relative h-[400px] lg:h-auto overflow-hidden bg-black group">
+                     {ACADEMY_IMAGES.map((img, idx) => (
+                        <img key={idx} src={img} alt={`Galeria Prothera ${idx + 1}`} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${idx === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}/>
+                     ))}
+                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-gray-900 pointer-events-none"></div>
+                     <div className="absolute bottom-6 left-6 z-10"><span className="bg-ortho-cyan text-black px-3 py-1 rounded font-bold text-xs uppercase tracking-wide mb-2 inline-block">Imersão Prática</span></div>
+                  </div>
+                  <div className="p-8 md:p-10 flex flex-col relative">
+                    <div className="flex items-center gap-4 mb-8 bg-black/40 p-4 rounded-xl border border-gray-800">
+                      <div className="flex flex-col items-center justify-center bg-ortho-navy px-4 py-2 rounded-lg border border-ortho-cyan/30 min-w-[100px]">
+                        <span className="text-2xl font-bold text-white">21-24</span>
+                        <span className="text-xs font-bold text-ortho-cyan uppercase">Maio 2026</span>
+                      </div>
+                      <div><div className="flex items-center gap-2 text-gray-300 text-sm mb-1"><MapPin size={14} className="text-ortho-cyan" /> São Paulo - Brasil</div></div>
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-4 leading-tight">{course.title}</h2>
+                    <p className="text-gray-400 mb-6 leading-relaxed text-sm">{course.description}</p>
+                    <div className="mb-8 space-y-2">
+                      <p className="text-sm font-semibold text-white border-b border-gray-800 pb-2 mb-2">Com os professores:</p>
+                      <div className="flex flex-wrap gap-2">
+                         <span className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">Roberto Araújo</span>
+                         <span className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">Gari Aristegui</span>
+                         <span className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">Gledison Oliveira</span>
+                      </div>
+                    </div>
+                    <div className="mt-auto">
+                      <a href="https://wa.me/5519993989975?text=Olá, tenho interesse na Formação Rigo Concept" target="_blank" rel="noopener noreferrer" className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-green-500/20 group transform hover:-translate-y-1">
+                        <MessageCircle size={24} className="group-hover:animate-bounce" />
+                        <div className="text-left leading-tight"><span className="block text-xs font-normal opacity-90">Últimas Vagas</span><span className="block text-lg">Inscrever via WhatsApp</span></div>
+                      </a>
+                      <p className="text-center text-gray-500 text-xs mt-3">Clique para falar diretamente com nossa equipe.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // ==========================================
+      // 4. MAIN APP
+      // ==========================================
+
+      const Navbar = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const location = useLocation();
+
+        const navLinks = [
+          { name: 'Início', path: '/' },
+          { name: 'Central de Fabricação', path: '/manufacturing' },
+          { name: 'Máquinas e Equipamentos', path: '/machines' },
+          { name: 'Cursos', path: '/courses' },
+        ];
+
+        const isActive = (path) => location.pathname === path;
+
+        return (
+          <nav className="fixed w-full top-0 z-50 bg-ortho-black/90 backdrop-blur-md border-b border-gray-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                <div className="flex-shrink-0 pt-2">
+                  <Logo />
+                </div>
+                <div className="hidden md:block">
+                  <div className="ml-10 flex items-baseline space-x-8">
+                    {navLinks.map((link) => (
+                      <Link key={link.name} to={link.path} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${isActive(link.path) ? 'text-ortho-cyan border-b-2 border-ortho-cyan' : 'text-gray-300 hover:text-white'}`}>
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <div className="hidden md:block">
+                  <a href="https://wa.me/5519993989975" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-ortho-cyan text-ortho-cyan px-6 py-2 rounded-full hover:bg-ortho-cyan hover:text-black transition-all duration-300 font-semibold text-sm inline-block">Contato</a>
+                </div>
+                <div className="md:hidden">
+                  <button onClick={() => setIsOpen(!isOpen)} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                    {isOpen ? <X size={24} /> : <Menu size={24} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+            {isOpen && (
+              <div className="md:hidden bg-ortho-navy border-b border-gray-800">
+                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                  {navLinks.map((link) => (
+                    <Link key={link.name} to={link.path} onClick={() => setIsOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(link.path) ? 'text-ortho-cyan bg-black/20' : 'text-gray-300 hover:text-white'}`}>
+                      {link.name}
+                    </Link>
+                  ))}
+                   <a href="https://wa.me/5519993989975" target="_blank" rel="noopener noreferrer" className="block w-full text-center mt-4 bg-ortho-cyan text-black px-3 py-2 rounded-md font-bold">Contato via WhatsApp</a>
+                </div>
+              </div>
+            )}
+          </nav>
+        );
+      };
+
+      const Footer = () => (
+        <footer className="bg-ortho-navy pt-16 pb-8 border-t border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+              <div className="col-span-1 md:col-span-2">
+                <div className="mb-6 inline-block"><Logo /></div>
+                <p className="text-gray-400 max-w-sm leading-relaxed mt-4">Liderando a revolução na fabricação de próteses e órteses através da engenharia de precisão e tecnologia avançada. Devolvendo movimento, restaurando vidas.</p>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-6">Links Rápidos</h3>
+                <ul className="space-y-4">
+                  <li><Link to="/manufacturing" className="text-gray-400 hover:text-ortho-cyan transition-colors">Produtos</Link></li>
+                  <li><Link to="/machines" className="text-gray-400 hover:text-ortho-cyan transition-colors">Tecnologia</Link></li>
+                  <li><Link to="/courses" className="text-gray-400 hover:text-ortho-cyan transition-colors">Educação</Link></li>
+                  <li><a href="#" className="text-gray-400 hover:text-ortho-cyan transition-colors">Política de Privacidade</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-6">Contato</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3 text-gray-400"><MapPin size={18} className="text-ortho-cyan mt-1 flex-shrink-0" /><span>R. Carlos Vasconcelos, 2140<br/>Aldeota, Fortaleza - CE<br/>CEP 60115-044</span></li>
+                  <li className="flex items-center gap-3 text-gray-400"><Phone size={18} className="text-ortho-cyan" />(19) 99398-9975</li>
+                  <li className="flex items-center gap-3 text-gray-400"><Mail size={18} className="text-ortho-cyan" />contato@prothera.com.br</li>
+                  <li className="flex gap-4 mt-4">
+                    <a href="https://www.instagram.com/protheraorteseprotese/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                      <div className="p-2 bg-gray-800 rounded-full group-hover:bg-ortho-cyan group-hover:text-black transition-colors"><Instagram size={20} /></div><span className="text-sm">@protheraorteseprotese</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 pt-8 text-center">
+              <p className="text-gray-500 text-sm">© 2024 Prothera O & P Service. Todos os direitos reservados.</p>
+            </div>
+          </div>
+        </footer>
+      );
+
+      const App = () => {
+        return (
+          <Router>
+            <ScrollToTop />
+            <div className="min-h-screen bg-ortho-black text-white selection:bg-ortho-cyan selection:text-black">
+              <Navbar />
+              <main className="pt-20">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/manufacturing" element={<Manufacturing />} />
+                  <Route path="/machines" element={<Machines />} />
+                  <Route path="/courses" element={<Courses />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        );
+      };
+
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+    </script>
   </body>
 </html>
