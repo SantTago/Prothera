@@ -39,34 +39,34 @@ export const VERTICAL_VIDEOS: VideoData[] = [
   {
     id: 'shorts1',
     title: 'CNC Prothera em Ação',
-    // YouTube Short 1: vJrSu3YM9Ic
-    thumbnail: 'https://img.youtube.com/vi/vJrSu3YM9Ic/hqdefault.jpg', 
+    // YouTube Short 1: SlmDZdetFz0
+    thumbnail: 'https://img.youtube.com/vi/SlmDZdetFz0/hqdefault.jpg', 
     duration: '0:15',
-    videoUrl: 'https://www.youtube.com/embed/vJrSu3YM9Ic'
+    videoUrl: 'https://www.youtube.com/embed/SlmDZdetFz0'
   },
   {
     id: 'shorts2',
     title: 'Processo de Escultura Digital',
-    // YouTube Short 2: DrjqW1NpnkU
-    thumbnail: 'https://img.youtube.com/vi/DrjqW1NpnkU/hqdefault.jpg',
+    // YouTube Short 2: W37jTpGZTks
+    thumbnail: 'https://img.youtube.com/vi/W37jTpGZTks/hqdefault.jpg',
     duration: '0:20',
-    videoUrl: 'https://www.youtube.com/embed/DrjqW1NpnkU'
+    videoUrl: 'https://www.youtube.com/embed/W37jTpGZTks'
   },
   {
     id: 'shorts3',
     title: 'Acabamento e Detalhes',
-    // YouTube Short 3: 837owKGwuo0
-    thumbnail: 'https://img.youtube.com/vi/837owKGwuo0/hqdefault.jpg',
+    // YouTube Short 3: zCwYFRrRMgk
+    thumbnail: 'https://img.youtube.com/vi/zCwYFRrRMgk/hqdefault.jpg',
     duration: '0:30',
-    videoUrl: 'https://www.youtube.com/embed/837owKGwuo0'
+    videoUrl: 'https://www.youtube.com/embed/zCwYFRrRMgk'
   },
   {
     id: 'shorts4',
     title: 'Tecnologia Aplicada',
-    // YouTube Short 4: vUAGAsXhQak
-    thumbnail: 'https://img.youtube.com/vi/vUAGAsXhQak/hqdefault.jpg',
+    // YouTube Short 4: 5GDZ0-QbtZE
+    thumbnail: 'https://img.youtube.com/vi/5GDZ0-QbtZE/hqdefault.jpg',
     duration: '0:25',
-    videoUrl: 'https://www.youtube.com/embed/vUAGAsXhQak'
+    videoUrl: 'https://www.youtube.com/embed/5GDZ0-QbtZE'
   }
 ];
 
