@@ -1,4 +1,5 @@
 
+
 import { VideoData, Course, Testimonial, TeamMember } from './types';
 
 export const VIDEOS: VideoData[] = [
@@ -111,7 +112,7 @@ export const TEAM: TeamMember[] = [
     id: 'tm3',
     name: 'Roberto Araújo',
     role: 'CPO Especialista em Escoliose',
-    image: 'https://i.ibb.co/B1R88cY/a351250c-6a48-4a98-abd5-5945ddb12fed.jpg'
+    image: 'https://i.ibb.co/ymLnPgS3/63c8cb03-8527-4e77-9809-b2515c602394.jpg'
   }
 ];
 
